@@ -1,18 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link, NavLink, Outlet } from "react-router-dom";
-// import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 import LoadingSpinner from "../components/LoadingSpinner";
-import CgProfile from "../assets/profile-1.jpg";
-const DashboardLayout = () => {
-  const navigate = useNavigate();
-  // const { user, logOut, loading } = useAuth();
-
+import profile from "../assets/profile.png";
+const Drawer = () => {
+  const navigate =useNavigate()
+  const { user, logOut, loading } = useAuth();
+ 
   const [isOpen, setIsOpen] = useState(false);
   const drawerRef = useRef(null);
   const openButtonRef = useRef(null);
   const mainContentRef = useRef(null);
-
+ 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -46,16 +46,17 @@ const DashboardLayout = () => {
   const handleLogOut = async () => {
     const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
-      // await logOut();
-      navigate("/");
-    }
-    return;
+      await logOut();
+      navigate('/')
+ 
+    }  
+    return
   };
 
-  if (false) {
+  if (loading) {
     return <LoadingSpinner />;
   }
-let user = true;
+
   return (
     <div className="relative  flex overflow-hidden">
       {/* Open Drawer Button */}
@@ -88,7 +89,7 @@ let user = true;
                         <img src={user?.photoURL} />
                       </div>
                     ) : (
-                      <img src={CgProfile} className="" />
+                      <img src={profile} className="" />
                     )}
                   </div>
 
@@ -104,11 +105,11 @@ let user = true;
                   <NavLink
                     to="/dashboard/all-recipe"
                     className="btn p-2 rounded hover:bg-slate-600 w-full"
-                    style={({ isActive, isTransitioning }) => {
+                    style={({ isActive,  isTransitioning }) => {
                       return {
                         fontWeight: isActive ? "bold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "rgb(234,88,12)" : "",
+                        color:isActive? 'white':'black',
+                        backgroundColor: isActive?'rgb(234,88,12)':'',
                         viewTransitionName: isTransitioning ? "slide" : "",
                       };
                     }}
@@ -117,35 +118,35 @@ let user = true;
                   </NavLink>
                 </li>
                 <li className="mb-2">
-                  <NavLink
+                <NavLink
                     to="/dashboard/recipe-maintain"
                     className="btn p-2 rounded hover:bg-slate-600 w-full"
-                    style={({ isActive, isTransitioning }) => {
+                    style={({ isActive,  isTransitioning }) => {
                       return {
                         fontWeight: isActive ? "bold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "rgb(234,88,12)" : "",
+                        color:isActive? 'white':'black',
+                        backgroundColor: isActive?'rgb(234,88,12)':'',
                         viewTransitionName: isTransitioning ? "slide" : "",
                       };
                     }}
                   >
-                    Recipe Maintenance
+                  Recipe Maintenance
                   </NavLink>
                 </li>
                 <li className="mb-2">
-                  <NavLink
+                <NavLink
                     to="/dashboard/add-recipe"
                     className="btn p-2 rounded hover:bg-slate-600 w-full"
-                    style={({ isActive, isTransitioning }) => {
+                    style={({ isActive,  isTransitioning }) => {
                       return {
                         fontWeight: isActive ? "bold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "rgb(234,88,12)" : "",
+                        color:isActive? 'white':'black',
+                        backgroundColor: isActive?'rgb(234,88,12)':'',
                         viewTransitionName: isTransitioning ? "slide" : "",
                       };
                     }}
                   >
-                    Add Recipe
+                   Add Recipe
                   </NavLink>
                 </li>
               </ul>
@@ -187,4 +188,4 @@ let user = true;
   );
 };
 
-export default DashboardLayout;
+export default Drawer;

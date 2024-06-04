@@ -13,6 +13,7 @@ import Products from "../pages/Products";
 import Register from "../pages/Register";
 import Contact from "../pages/Contact";
 import DashboardLayout from "../Layouts/DashboardLayout";
+import Services from "../pages/Services";
 // import MangeAllRecipe from "../pages/Dashboard/MangeAllRecipe";
  
 // import RecipeMaintenance from "../pages/Dashboard/RecipeMaintenance";
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       { 
         path: "/products", 
         element: <Products />
+       },
+      { 
+        path: "/service", 
+        element: <Services />
        },
       { 
         path: "/login", 
