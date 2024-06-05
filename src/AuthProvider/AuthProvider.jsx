@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createContext, useEffect, useState } from "react";
 import { app } from "../firebase/firebase.config";
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -40,6 +40,10 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
     });
   };
+  const signIn = (email, password) => {
+    setLoading(true)
+    return signInWithEmailAndPassword(auth, email, password)
+  };
   const createUser = async (email, password, username) => {
  
     
@@ -74,7 +78,7 @@ const AuthProvider = ({ children }) => {
     };
   }, []);
  
-  const authInfo = { googleLogin,loading,user,createUser,logOut };
+  const authInfo = { googleLogin,loading,user,createUser,logOut,signIn,setLoading };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );

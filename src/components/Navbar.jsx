@@ -8,8 +8,11 @@ const Navbar = () => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navbarRef = useRef(null);
-const name = user?.displayName.split(' ').map(w=> w[0]).join('')
-console.log(name)
+  const name = user?.displayName
+    ?.split(" ")
+    .map((w) => w[0])
+    .join("");
+  console.log(name);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -68,12 +71,14 @@ console.log(name)
           >
             Home
           </Link>
-          {user && <Link
-                to="/dashboard"
-                className="text-white hover:text-yellow-500 transition duration-300 ease-in-out transform hover:scale-110"
-              >
-                Dashboard
-              </Link>}
+          {user && (
+            <Link
+              to="/dashboard"
+              className="text-white hover:text-yellow-500 transition duration-300 ease-in-out transform hover:scale-110"
+            >
+              Dashboard
+            </Link>
+          )}
           <Link
             to="/about"
             className="text-white hover:text-yellow-500 transition duration-300 ease-in-out transform hover:scale-110"
@@ -116,12 +121,14 @@ console.log(name)
               Logout
             </button>
           )}
-         
-         {user &&  <div className="avatar online placeholder">
-            <div className="bg-green-500 font-mono text-neutral-content rounded-full w-12">
-              <span className="text-xl">{name || ''}</span>
+
+          {user && (
+            <div className="avatar online placeholder">
+              <div className="bg-green-500 font-mono text-neutral-content rounded-full w-12">
+                <span className="text-xl">{name || "user"}</span>
+              </div>
             </div>
-          </div> }
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -153,12 +160,14 @@ console.log(name)
               >
                 Home
               </Link>
-             {user && <Link
-                to="/dashboard"
-                className="text-white hover:text-yellow-500 transition duration-300 ease-in-out transform hover:scale-110"
-              >
-                Dashboard
-              </Link>}
+              {user && (
+                <Link
+                  to="/dashboard"
+                  className="text-white hover:text-yellow-500 transition duration-300 ease-in-out transform hover:scale-110"
+                >
+                  Dashboard
+                </Link>
+              )}
               <Link
                 to="/about"
                 className="text-white hover:text-yellow-500 transition duration-300 ease-in-out transform hover:scale-110"
@@ -201,7 +210,6 @@ console.log(name)
                   Logout
                 </button>
               )}
-            
             </div>
             {/* Close Icon */}
             <button

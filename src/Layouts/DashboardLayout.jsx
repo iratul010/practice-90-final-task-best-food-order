@@ -4,15 +4,16 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import LoadingSpinner from "../components/LoadingSpinner";
 import profile from "../assets/profile.png";
+
 const Drawer = () => {
-  const navigate =useNavigate()
+  const navigate = useNavigate();
   const { user, logOut, loading } = useAuth();
- 
+
   const [isOpen, setIsOpen] = useState(false);
   const drawerRef = useRef(null);
   const openButtonRef = useRef(null);
   const mainContentRef = useRef(null);
- 
+
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -47,29 +48,17 @@ const Drawer = () => {
     const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
       await logOut();
-      navigate('/')
- 
-    }  
-    return
+      navigate("/");
+    }
+    return;
   };
-
+  
   if (loading) {
     return <LoadingSpinner />;
   }
 
   return (
-    <div className="relative  flex overflow-hidden">
-      {/* Open Drawer Button */}
-      {!isOpen && (
-        <button
-          ref={openButtonRef}
-          onClick={toggleDrawer}
-          className="fixed top-4 left-4 z-10 p-2 bg-blue-600 text-white rounded lg:w-[220px] xxl:w-[220px] sm:w-[140px]  md:w-[220px]"
-        >
-          Open Drawer
-        </button>
-      )}
-
+    <div className="relative flex h-screen">
       {/* Drawer */}
       <div
         ref={drawerRef}
@@ -83,14 +72,20 @@ const Drawer = () => {
               <div className="flex flex-col h-full">
                 <div className="flex-grow">
                   <h2 className="text-2xl font-bold mb-4">Profile</h2>
-                  <div className="avatar online left-10 w-[100px]">
-                    {user ? (
-                      <div className="w-24 rounded-full">
-                        <img src={user?.photoURL} />
-                      </div>
-                    ) : (
-                      <img src={profile} className="" />
-                    )}
+                  <div className="flex justify-center items-center h-full">
+                    <div className="online avatar">
+                      {user?.photoURL ? (
+                        <div className="w-12 avatar rounded-full">
+                          <img src={user?.photoURL} />
+                        </div>
+                      ) : (
+                        <div className="avatar rounded-full">
+                          <div className="w-12">
+                            <img src={profile} className="" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="mb-4">
@@ -103,50 +98,50 @@ const Drawer = () => {
               <ul>
                 <li className="mb-2">
                   <NavLink
-                    to="/dashboard/all-recipe"
+                    to="/dashboard/all-foods"
                     className="btn p-2 rounded hover:bg-slate-600 w-full"
-                    style={({ isActive,  isTransitioning }) => {
+                    style={({ isActive, isTransitioning }) => {
                       return {
                         fontWeight: isActive ? "bold" : "",
-                        color:isActive? 'white':'black',
-                        backgroundColor: isActive?'rgb(234,88,12)':'',
+                        color: isActive ? "white" : "black",
+                        backgroundColor: isActive ? "rgb(234,88,12)" : "",
                         viewTransitionName: isTransitioning ? "slide" : "",
                       };
                     }}
                   >
-                    All Recipe
+                    All Foods 
                   </NavLink>
                 </li>
                 <li className="mb-2">
-                <NavLink
-                    to="/dashboard/recipe-maintain"
+                  <NavLink  
+                    to="/dashboard/all-order"
                     className="btn p-2 rounded hover:bg-slate-600 w-full"
-                    style={({ isActive,  isTransitioning }) => {
+                    style={({ isActive, isTransitioning }) => {
                       return {
                         fontWeight: isActive ? "bold" : "",
-                        color:isActive? 'white':'black',
-                        backgroundColor: isActive?'rgb(234,88,12)':'',
+                        color: isActive ? "white" : "black",
+                        backgroundColor: isActive ? "rgb(234,88,12)" : "",
                         viewTransitionName: isTransitioning ? "slide" : "",
                       };
                     }}
                   >
-                  Recipe Maintenance
+                    My All Orders
                   </NavLink>
                 </li>
                 <li className="mb-2">
-                <NavLink
-                    to="/dashboard/add-recipe"
+                  <NavLink
+                    to="/dashboard/food-order"
                     className="btn p-2 rounded hover:bg-slate-600 w-full"
-                    style={({ isActive,  isTransitioning }) => {
+                    style={({ isActive, isTransitioning }) => {
                       return {
                         fontWeight: isActive ? "bold" : "",
-                        color:isActive? 'white':'black',
-                        backgroundColor: isActive?'rgb(234,88,12)':'',
+                        color: isActive ? "white" : "black",
+                        backgroundColor: isActive ? "rgb(234,88,12)" : "",
                         viewTransitionName: isTransitioning ? "slide" : "",
                       };
                     }}
                   >
-                   Add Recipe
+                    Add Food Order
                   </NavLink>
                 </li>
               </ul>
@@ -172,18 +167,39 @@ const Drawer = () => {
       {/* Main Content */}
       <div
         ref={mainContentRef}
-        className={`flex-grow bg-gray-100 p-8 ${
+        className={`flex-grow bg-gray-100 p-8 transition-all duration-300 ${
           isOpen ? "ml-64" : "ml-0"
-        } md:ml-64`}
+        }`}
         onClick={handleMainContentClick}
       >
-        <Outlet />
-      </div>
+        <div className="grid grid-cols-1">
+          {/* Left Side: Drawer Button or Name */}
+          <div className="flex flex-col items-start justify-start">
+            {!isOpen && (
+              <button
+                ref={openButtonRef}
+                onClick={toggleDrawer}
+                className="p-2 bg-blue-600 text-white rounded w-full md:w-auto"
+              >
+                Open Drawer
+              </button>
+            )}
+          </div>
 
-      {/* Right Side Profile Section */}
-      {/* <div className="fixed top-0 right-0 h-full bg-gray-800 text-white w-full md:w-64 p-4">
-      
-      </div> */}
+          {/* Mid Context Section */}
+          <div className="flex flex-col items-center justify-center">
+            
+            <Outlet />
+          </div>
+
+          {/* Right Side Section */}
+          
+          {/* <div className="flex flex-col items-center justify-center">
+            <h2 className="text-2xl font-bold mb-4">Right Section</h2>
+            <p>Some additional context or components can go here.</p>
+          </div> */}
+        </div>
+      </div>
     </div>
   );
 };

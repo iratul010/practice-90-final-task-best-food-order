@@ -4,25 +4,29 @@ import useAuth from '../hooks/useAuth';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const Login = () => {
-  const { googleLogin,loading} = useAuth();
+  const { googleLogin,loading,signIn} = useAuth();
+ 
   // const location = useLocation();
   const navigate = useNavigate();
   // const from = location?.state?.from?.pathname || "/";
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
-  const handleSubmit = (event) => {
+  
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    if (!username.trim() || !password.trim()) {
+    if (!email.trim() || !password.trim()) {
       setError('Please enter both username and password.');
       return;
     }
-    console.log('Username:', username);
-    console.log('Password:', password);
-    setUsername('');
-    setPassword('');
-    setError('');
+    console.log(email,password)
+    await signIn(email,password) 
+    navigate('/')
+    setTimeout(()=>{setEmail('');
+     setPassword('');
+     setError('');
+    },300)
+    
   };
 
   const handleGoogleLogin = () => {
@@ -45,15 +49,15 @@ const Login = () => {
           {error && <div className="text-red-500 text-xs italic mb-4">{error}</div>}
           <div className="mb-4">
             <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">
-              Username
+              Email
             </label>
             <input
               type="text"
-              id="username"
+              id="email"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-6">

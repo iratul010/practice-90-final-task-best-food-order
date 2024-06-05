@@ -12,7 +12,7 @@ const Hero = ( ) => {
   };
   return (
     <div
-      className="h-[calc(100vh-64px)] bg-black bg-cover bg-center flex items-center justify-center relative"
+      className="h-[100vh] bg-black bg-cover bg-center flex items-center justify-center relative"
       style={{ 
         backgroundImage: "url('../src/assets/hero.jpg')",
       }}

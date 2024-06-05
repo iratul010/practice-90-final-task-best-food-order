@@ -25,7 +25,7 @@ const Register = () => {
       return;
     }
    
-      createUser(email, password, username)
+    await  createUser(email, password, username)
         
           // Clear input fields after a delay
           setTimeout(() => {
