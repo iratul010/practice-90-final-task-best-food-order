@@ -21,17 +21,18 @@ const Login = () => {
     }
     console.log(email,password)
     await signIn(email,password) 
-    navigate('/')
-    setTimeout(()=>{setEmail('');
-     setPassword('');
-     setError('');
-    },300)
+    setTimeout(()=>{
+      setEmail('');
+      setPassword('');
+      setError('');
+      navigate('/')
+    },2000)
     
   };
 
   const handleGoogleLogin = () => {
      googleLogin();
-      navigate('/')
+     
   };
 
   const handleFacebookLogin = () => {

@@ -84,7 +84,7 @@ const EditFoodOrder = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+ const token = localStorage.getItem('token');
  
     const { name, address, phone, category, items } = form;
   const data = {  name, address, phone, category, items, demandCharge };  
@@ -95,6 +95,7 @@ const EditFoodOrder = () => {
       method: 'PATCH',  
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`
       },
       body: JSON.stringify(data),
     });

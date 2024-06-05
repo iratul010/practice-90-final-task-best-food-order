@@ -21,9 +21,28 @@ const AuthProvider = ({ children }) => {
 
       // Attempt to sign in with a popup using the Google provider
       return signInWithPopup(auth, googleProvider)
-        .then((result) => {
-          // Successful login
-          console.log("User signed in: ", result.user);
+        .then((data) => {
+          const email = data?.user.email;
+          const name = data?.user?.displayName;
+
+         if(email){
+             const userInfo={
+              email: email,
+              name: name,
+             }
+
+             fetch('http://localhost:5000/user',{
+              method:'POST',
+              headers:{
+                'Content-Type':'application/json'
+              },
+              body: JSON.stringify(userInfo)
+             }).then(res=>res.json()).then(data=>{
+              //two parameeters needed for localstorage  
+              localStorage.setItem('token',data?.token)
+              console.log('data',data)
+             })
+         }
         })
         .catch((error) => {
           // Handle errors here
@@ -44,26 +63,23 @@ const AuthProvider = ({ children }) => {
     setLoading(true)
     return signInWithEmailAndPassword(auth, email, password)
   };
-  const createUser = async (email, password, username) => {
- 
+const createUser = async (email, password, username) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
     
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      await updateProfile(user, {
-        displayName: username
-      });
-  
-      // Store additional user details in Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        username: username,
-        email: email
-      });
-     
-    } catch (error) {
-      console.error("Error creating user: ", error);
-    }
-  };
+    // Set display name for the user
+    await updateProfile(user, {
+      displayName: username
+    });
+
+   
+    return user;
+  } catch (error) {
+    console.error("Error creating user: ", error);
+    throw error;  
+  }
+};
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const Register = () => {
-  const {loading,createUser,user} = useAuth()
-  console.log(user)
+  const {loading,createUser,googleLogin} = useAuth()
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +25,28 @@ const Register = () => {
       return;
     }
    
-    await  createUser(email, password, username)
+    await  createUser(email, password, username).then(data=>{
+
+      const email = data?.email;
+      const name = data?.displayName;
+
+     if(email){
+         const userInfo={
+          email: email,
+          name: name,
+         }
+
+         fetch('http://localhost:5000/user',{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json'
+          },
+          body: JSON.stringify(userInfo)
+         }).then(res=>res.json()).then(data=>{
+          console.log('data',data)
+         })
+     }
+    })
         
           // Clear input fields after a delay
           setTimeout(() => {
@@ -53,7 +74,14 @@ function successRemove(){
     setSuccessMessage('')
   }, 3000);
 }
-  
+const handleGoogleLogin = () => {
+  googleLogin();
+  navigate('/')
+};
+
+const handleFacebookLogin = () => {
+ console.log('Facebook login clicked');
+};
  if(loading){
   <LoadingSpinner/>
  }
@@ -126,6 +154,25 @@ function successRemove(){
           </div>
           <p className='text-center'>Already have an account? <Link to='/login' className='text-orange-500 text-lg'>Login</Link></p>
         </form>
+        <div className='flex flex-col '>
+      <span className="text-lg text-gray-600 mr-2 text-center p-4">Or</span>
+            <div className="flex flex-col gap-2  items-center">
+              <button
+                type="button"
+                className="bg-red-500 w-full hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                onClick={handleGoogleLogin}
+              >
+                Google
+              </button>
+              <button
+                type="button"
+                className="bg-blue-800 w-full hover:bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
+                onClick={handleFacebookLogin}
+              >
+                Facebook
+              </button>
+            </div>
+      </div>
       </div>
     </div>
   );
